@@ -75,9 +75,9 @@ public class StateManager : MonoBehaviourPunCallbacks
         CurrentPlayerID = (CurrentPlayerID + 1) % NumberOfPlayers;
 
         Debug.Log("Current player id: " + CurrentPlayerID);
-        Debug.Log("playertokens new turn: " + playerTokens[CurrentPlayerID-1]);
+        Debug.Log("playertokens new turn: " + playerTokens[CurrentPlayerID]);
 
-        cameraFollow.target = playerTokens[CurrentPlayerID-1].transform;
+        cameraFollow.target = playerTokens[CurrentPlayerID].transform;
     }
     public enum TurnPhase
     {

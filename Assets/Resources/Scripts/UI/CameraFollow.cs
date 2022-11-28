@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
-public class CameraFollow : MonoBehaviour
+public class CameraFollow : MonoBehaviourPunCallbacks
 {
     // Start is called before the first frame update
     void Start()
@@ -38,8 +39,8 @@ public class CameraFollow : MonoBehaviour
 
         //this.transform.rotation = Quaternion.Euler( new Vector3(0, theAngle, 0) );
 
-        // Vector3 desiredPostion = target.position + offset;
-        // Vector3 smoothedPosition = Vector3.SmoothDamp(transform.position, desiredPostion, ref pivotVelocity, smoothSpeed);
-        // transform.position = smoothedPosition;
+        Vector3 desiredPostion = target.position + offset;
+        Vector3 smoothedPosition = Vector3.SmoothDamp(transform.position, desiredPostion, ref pivotVelocity, smoothSpeed);
+        transform.position = smoothedPosition;
     }
 }
