@@ -18,6 +18,9 @@ public class AddPlayerManager : MonoBehaviourPunCallbacks
     [SerializeField]
     GameObject StateManager;
 
+    [SerializeField]
+    GameObject PlayersInGame;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -35,12 +38,14 @@ public class AddPlayerManager : MonoBehaviourPunCallbacks
                     Quaternion.identity);
 
                 Debug.Log("Player added");
+                
+                PlayersInGame.GetComponent<PhotonView>().RPC("addPlayerToGame", RpcTarget.AllBuffered);
 
                 // add display for joining player
-                // ScoreDisplay.GetComponent<PhotonView>().RPC("addPlayer", RpcTarget.AllBuffered);
+                ScoreDisplay.GetComponent<PhotonView>().RPC("addPlayer", RpcTarget.AllBuffered);
 
                 // add players to state manager
-                // StateManager.GetComponent<PhotonView>().RPC("addPlayer2", RpcTarget.AllBuffered);
+                StateManager.GetComponent<PhotonView>().RPC("addPlayer2", RpcTarget.AllBuffered);
             }
         }
     }

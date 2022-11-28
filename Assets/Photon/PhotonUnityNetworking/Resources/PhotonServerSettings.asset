@@ -41,6 +41,7 @@ MonoBehaviour:
   - RespawnSpaceship
   - addPlayer
   - addPlayer2
+  - addPlayerToGame
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

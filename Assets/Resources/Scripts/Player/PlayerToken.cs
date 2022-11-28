@@ -4,7 +4,7 @@ using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
 
-public class PlayerToken : MonoBehaviour
+public class PlayerToken : MonoBehaviourPunCallbacks
 {
     public Space StartingSpace;
     public Space currentSpace;
@@ -38,76 +38,85 @@ public class PlayerToken : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        stateManager = GameObject.FindObjectOfType<StateManager>();
-        // create player stats as child
-        // playerStats = transform.GetComponentInChildren<PlayerStats>();
+        if(photonView.IsMine)
+        {
+            stateManager = GameObject.FindObjectOfType<StateManager>();
+            // create player stats as child
+            // playerStats = transform.GetComponentInChildren<PlayerStats>();
 
-        spacesDisplay = GameObject.FindObjectOfType<SpaceToMoveDisplay>();
-        scoreDisplay = GameObject.FindObjectOfType<ScoreDisplay>();
+            spacesDisplay = GameObject.FindObjectOfType<SpaceToMoveDisplay>();
+            scoreDisplay = GameObject.FindObjectOfType<ScoreDisplay>();
 
-        // find first space on start
-        this.StartingSpace = FindObjectOfType<Bank>();
-        this.currentSpace = FindObjectOfType<Bank>();
+            // find first space on start
+            this.StartingSpace = FindObjectOfType<Bank>();
+            this.currentSpace = FindObjectOfType<Bank>();
 
-        // player id, starts at 1
-        playerID = PhotonNetwork.CurrentRoom.PlayerCount;
+            // player id, starts at 0 (0123)
+            playerID = PhotonNetwork.CurrentRoom.PlayerCount - 1;
 
-        targetPostion = this.transform.position;
+            Debug.Log("player id on room create: " + playerID);
+
+            targetPostion = this.transform.position;
+        }
+        
     }
-
 
     // Update is called once per frame
     void Update()
     {
-        if (stateManager.isDoneRolling)
+        if(photonView.IsMine)
         {
-            StartMovement();
-        }
-        if (!isAnimating)
-        {
-            //nothing for us to do
-            return;
-        }
-        if (Vector3.Distance(
-           new Vector3(this.transform.position.x, targetPostion.y, this.transform.position.z),
-           targetPostion) < smoothDistance)
-        {
-            //we reached the target and too high up, is there still moves in the queue
-            if(
-                ((this.transform.position.y - smoothDistance) > targetPostion.y)
-            )
+            if (stateManager.isDoneRolling)
             {
-                //we are out out of moves, drop down
+                StartMovement();
+            }
+            if (!isAnimating)
+            {
+                //nothing for us to do
+                return;
+            }
+            if (Vector3.Distance(
+            new Vector3(this.transform.position.x, targetPostion.y, this.transform.position.z),
+            targetPostion) < smoothDistance)
+            {
+                //we reached the target and too high up, is there still moves in the queue
+                if(
+                    ((this.transform.position.y - smoothDistance) > targetPostion.y)
+                )
+                {
+                    //we are out out of moves, drop down
+                    this.transform.position = Vector3.SmoothDamp(
+                        this.transform.position,
+                        new Vector3(this.transform.position.x, targetPostion.y, this.transform.position.z),
+                        ref velocity,
+                        smoothTime);
+                }
+                else
+                {
+                    //right pos, right height
+                    AdvanceMoveQueue();
+                }
+            }
+
+            //rise up before sideways
+            else if (this.transform.position.y < (smoothHeight - smoothDistance))
+            {
                 this.transform.position = Vector3.SmoothDamp(
                     this.transform.position,
-                    new Vector3(this.transform.position.x, targetPostion.y, this.transform.position.z),
+                    new Vector3(this.transform.position.x, smoothHeight, this.transform.position.z),
                     ref velocity,
-                    smoothTime);
+                    smoothTimeVertical);
             }
             else
             {
-                //right pos, right height
-                AdvanceMoveQueue();
+                this.transform.position = Vector3.SmoothDamp(
+                this.transform.position,
+                new Vector3(targetPostion.x, smoothHeight, targetPostion.z),
+                ref velocity,
+                smoothTime);
             }
         }
 
-        //rise up before sideways
-        else if (this.transform.position.y < (smoothHeight - smoothDistance))
-        {
-            this.transform.position = Vector3.SmoothDamp(
-                this.transform.position,
-                new Vector3(this.transform.position.x, smoothHeight, this.transform.position.z),
-                ref velocity,
-                smoothTimeVertical);
-        }
-        else
-        {
-            this.transform.position = Vector3.SmoothDamp(
-               this.transform.position,
-               new Vector3(targetPostion.x, smoothHeight, targetPostion.z),
-               ref velocity,
-               smoothTime);
-        }
     }
     public bool lastMoveForward = false;
     //bool beginningCase = true;
@@ -276,6 +285,7 @@ public class PlayerToken : MonoBehaviour
         // remove ourself from old space
         if(currentSpace != null)
         {
+            Debug.Log("player id on current space: " + playerID);
             currentSpace.playerTokensHere[playerID] = null;
         }
      
@@ -394,14 +404,17 @@ public class PlayerToken : MonoBehaviour
     }
     IEnumerator suitUpdate()
     {
-        Suit thisSuit = currentSpace.GetComponent<Suit>();
+        if(photonView.IsMine)
+        {
+            Suit thisSuit = currentSpace.GetComponent<Suit>();
 
-        this.playerStats.suitsOwned[(int)thisSuit.suit] = true;
+            this.playerStats.suitsOwned[(int)thisSuit.suit] = true;
 
-        // update display
-        scoreDisplay.updateSuits(this, thisSuit.suit);
+            // update display
+            scoreDisplay.updateSuits(this, thisSuit.suit);
 
-        yield return new WaitForSeconds(1);
+            yield return new WaitForSeconds(1);
+        }
     }
     public Vector3 getPlayerDirection()
     {

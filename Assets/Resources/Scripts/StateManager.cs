@@ -31,6 +31,10 @@ public class StateManager : MonoBehaviourPunCallbacks
 
     public PlayerToken[] playerTokens;
 
+    [SerializeField]
+    GameObject PlayersInGame;
+
+
     void Start()
     {
         scoreDisplay = GameObject.FindObjectOfType<ScoreDisplay>();
@@ -56,8 +60,8 @@ public class StateManager : MonoBehaviourPunCallbacks
             i++;
         }
 
-        // Debug.Log("Current player id: " + CurrentPlayerID);
-        // cameraFollow.target = playerTokens[CurrentPlayerID].transform;
+        Debug.Log("Current player id: " + CurrentPlayerID);
+        cameraFollow.target = playerTokens[CurrentPlayerID].transform;
     }
 
     public void NewTurn()
@@ -71,9 +75,9 @@ public class StateManager : MonoBehaviourPunCallbacks
         CurrentPlayerID = (CurrentPlayerID + 1) % NumberOfPlayers;
 
         Debug.Log("Current player id: " + CurrentPlayerID);
-        Debug.Log("playertokens new turn: " + playerTokens[CurrentPlayerID]);
+        Debug.Log("playertokens new turn: " + playerTokens[CurrentPlayerID-1]);
 
-        cameraFollow.target = playerTokens[CurrentPlayerID].transform;
+        cameraFollow.target = playerTokens[CurrentPlayerID-1].transform;
     }
     public enum TurnPhase
     {
