@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun;
 using UnityEngine;
 using UnityEngine.UI;
-using Photon.Pun;
 
 public class DiceRoller : MonoBehaviourPunCallbacks
 {
@@ -19,6 +19,15 @@ public class DiceRoller : MonoBehaviourPunCallbacks
         //DiceValues = new int[1];
         stateManager = GameObject.FindObjectOfType<StateManager>();
         spacesDisplay = GameObject.FindObjectOfType<SpaceToMoveDisplay>();
+
+        if (photonView.IsMine)
+        {
+            // this.gameObject.SetActive(true);
+        }
+        else
+        {
+            rollButton.SetActive(false);
+        }
     }
 
     SpaceToMoveDisplay spacesDisplay;
@@ -37,6 +46,7 @@ public class DiceRoller : MonoBehaviourPunCallbacks
         stateManager.isDoneRolling = false;
     }
 
+    [PunRPC]
     public void RollTheDice()
     {
         if (stateManager.isDoneRolling)
@@ -48,7 +58,8 @@ public class DiceRoller : MonoBehaviourPunCallbacks
         {
             this.gameObject.SetActive(true);
         }
-        else{
+        else
+        {
             rollButton.SetActive(false);
         }
 

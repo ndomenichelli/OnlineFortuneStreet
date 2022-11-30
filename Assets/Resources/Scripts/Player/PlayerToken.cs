@@ -58,6 +58,31 @@ public class PlayerToken : MonoBehaviourPunCallbacks
       
         Debug.Log("player id on room create: " + this.playerID);
         this.targetPostion = this.transform.position;
+
+        // Material materialColor = Resources.Load("Materials/" + 'Player ' + (this.playerID + 1), typeof(Material)) as Material;
+
+        MeshRenderer playerColorHead = this.transform.GetChild(0).GetComponent<MeshRenderer>();
+        MeshRenderer playerColorBody = this.transform.GetChild(1).GetComponent<MeshRenderer>();
+
+        // set color per player
+        if(this.playerID == 0)
+        {
+            playerColorHead.material = Resources.Load("Materials/Player 1", typeof(Material)) as Material;
+            playerColorBody.material = Resources.Load("Materials/Player 1", typeof(Material)) as Material;
+        }
+        else if (this.playerID == 1)
+        {
+            playerColorHead.material = Resources.Load("Materials/Player 2", typeof(Material)) as Material;
+            playerColorBody.material = Resources.Load("Materials/Player 2", typeof(Material)) as Material;
+        }
+        else if (this.playerID == 2)
+        {
+            // myText.color = Color.green;
+        }
+        else if (this.playerID == 3)
+        {
+            // myText.color = Color.yellow;
+        }
     }
 
     // Update is called once per frame

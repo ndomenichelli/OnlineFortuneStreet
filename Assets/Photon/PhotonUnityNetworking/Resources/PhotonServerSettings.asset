@@ -42,6 +42,7 @@ MonoBehaviour:
   - addPlayer
   - addPlayer2
   - addPlayerToGame
+  - RollTheDice
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

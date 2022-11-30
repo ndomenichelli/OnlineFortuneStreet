@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Photon.Pun;
 
-public class SpaceToMoveDisplay : MonoBehaviour
+public class SpaceToMoveDisplay : MonoBehaviourPunCallbacks
 {
     // Start is called before the first frame update
     void Start()
