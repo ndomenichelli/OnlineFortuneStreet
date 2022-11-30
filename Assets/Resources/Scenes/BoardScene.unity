@@ -4853,7 +4853,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1025820790}
         m_TargetAssemblyTypeName: DiceRoller, Assembly-CSharp
-        m_MethodName: RollTheDice
+        m_MethodName: rollAndSendNumber
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

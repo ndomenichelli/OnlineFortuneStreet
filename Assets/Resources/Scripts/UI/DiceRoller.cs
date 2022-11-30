@@ -46,8 +46,14 @@ public class DiceRoller : MonoBehaviourPunCallbacks
         stateManager.isDoneRolling = false;
     }
 
+    public void rollAndSendNumber()
+    {
+        int numberToSend = Random.Range(1, 8);
+        this.GetComponent<PhotonView>().RPC("RollTheDice", RpcTarget.AllBuffered, numberToSend);
+    }
+    
     [PunRPC]
-    public void RollTheDice()
+    public void RollTheDice(int number)
     {
         if (stateManager.isDoneRolling)
         {
@@ -64,7 +70,7 @@ public class DiceRoller : MonoBehaviourPunCallbacks
         }
 
         // roll 1-7
-        stateManager.DiceTotal = Random.Range(1, 8);
+        stateManager.DiceTotal = number;
         spacesDisplay.setDisplay(stateManager.DiceTotal);
 
         this.transform.GetChild(0).GetComponent<Image>().sprite =
