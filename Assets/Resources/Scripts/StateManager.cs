@@ -17,6 +17,7 @@ public class StateManager : MonoBehaviourPunCallbacks
     public const int buyToRent = 10;
 
     // initial playerid, starts at 0
+    [SerializeField]
     public int CurrentPlayerID = 0;
 
     public int DiceTotal;
@@ -33,7 +34,6 @@ public class StateManager : MonoBehaviourPunCallbacks
 
     [SerializeField]
     GameObject PlayersInGame;
-
 
     void Start()
     {
@@ -61,7 +61,12 @@ public class StateManager : MonoBehaviourPunCallbacks
         }
 
         Debug.Log("Current player id: " + CurrentPlayerID);
-        cameraFollow.target = playerTokens[CurrentPlayerID].transform;
+
+        // set camera to first player
+        if(cameraFollow.target == null)
+        {
+            cameraFollow.target = playerTokens[CurrentPlayerID].transform;
+        }
     }
 
     public void NewTurn()

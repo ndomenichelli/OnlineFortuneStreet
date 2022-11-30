@@ -50,11 +50,14 @@ public class PlayerToken : MonoBehaviourPunCallbacks
         this.currentSpace = FindObjectOfType<Bank>();
 
         // player id, starts at 0 (0123)
-        playerID = PhotonNetwork.CurrentRoom.PlayerCount - 1;
 
-        Debug.Log("player id on room create: " + playerID);
+        Debug.Log("players in room" + PhotonNetwork.CurrentRoom.PlayerCount);
+        int playersInGame = GameObject.FindObjectsOfType<PlayerToken>().Length;
 
-        targetPostion = this.transform.position;
+        this.playerID = playersInGame - 1;
+      
+        Debug.Log("player id on room create: " + this.playerID);
+        this.targetPostion = this.transform.position;
     }
 
     // Update is called once per frame

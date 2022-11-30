@@ -3451,6 +3451,7 @@ GameObject:
   - component: {fileID: 1025820792}
   - component: {fileID: 1025820791}
   - component: {fileID: 1025820790}
+  - component: {fileID: 1025820793}
   m_Layer: 5
   m_Name: DiceRoller
   m_TagString: Untagged
@@ -3499,6 +3500,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: cfba443af34da1246800523a51991fc6, type: 3}
   - {fileID: 21300000, guid: b07bd66fd79554f42a6d882a5ebc8967, type: 3}
   - {fileID: 21300000, guid: 4a70e554eed4750459039fcd79cf2f5c, type: 3}
+  rollButton: {fileID: 1435360540}
 --- !u!114 &1025820791
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3537,6 +3539,28 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1025820788}
   m_CullTransparentMesh: 1
+--- !u!114 &1025820793
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1025820788}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 6
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &1057525396
 GameObject:
   m_ObjectHideFlags: 0
@@ -3899,6 +3923,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DiceImages: []
+  rollButton: {fileID: 0}
 --- !u!114 &1122007826 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1129931285666104344, guid: 8bca7b2a9781e0d4582a8f51db8c1ef8, type: 3}
@@ -4753,6 +4778,7 @@ GameObject:
   - component: {fileID: 1435360545}
   - component: {fileID: 1435360544}
   - component: {fileID: 1435360543}
+  - component: {fileID: 1435360546}
   m_Layer: 5
   m_Name: ButtonRollDice
   m_TagString: Untagged
@@ -4875,6 +4901,28 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1435360540}
   m_CullTransparentMesh: 1
+--- !u!114 &1435360546
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1435360540}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 5
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &1443593140
 GameObject:
   m_ObjectHideFlags: 0

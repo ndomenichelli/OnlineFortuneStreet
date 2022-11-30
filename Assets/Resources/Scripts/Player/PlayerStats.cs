@@ -19,12 +19,18 @@ public class PlayerStats : MonoBehaviourPunCallbacks
 
     public bool[] suitsOwned;
 
+    const int startingCash = 2000;
+    const int startingNetWorth = 2000;
+
     // Start is called before the first frame update
     void Start()
     {
         // Debug.Log("setup player token: " + PhotonNetwork.NickName);
         scoreDisplay = GameObject.FindObjectOfType<ScoreDisplay>();
         playerToken = GameObject.FindObjectOfType<PlayerToken>();
+
+        this.cash = startingCash;
+        this.netWorth = startingNetWorth;
     }
 
     // Update is called once per frame

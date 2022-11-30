@@ -34,12 +34,12 @@ public class AddPlayerManager : MonoBehaviourPunCallbacks
 
                 PhotonNetwork
                     .Instantiate(playerPrefab.name,
-                    new Vector3(playerCount-1 , 0, playerCount-1),
+                    new Vector3(playerCount-1 , 0.2f, playerCount-1),
                     Quaternion.identity);
 
                 Debug.Log("Player added");
                 
-                PlayersInGame.GetComponent<PhotonView>().RPC("addPlayerToGame", RpcTarget.AllBuffered);
+                // PlayersInGame.GetComponent<PhotonView>().RPC("addPlayerToGame", RpcTarget.AllBuffered);
 
                 // add display for joining player
                 ScoreDisplay.GetComponent<PhotonView>().RPC("addPlayer", RpcTarget.AllBuffered);
