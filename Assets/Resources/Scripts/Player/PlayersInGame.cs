@@ -9,7 +9,6 @@ public class PlayersInGame : MonoBehaviourPunCallbacks
     // [SerializeField]
     // public PlayerToken playerToken;
 
-    public List<PlayerToken> AllPlayers = new List<PlayerToken>(4);
     public PlayerToken[] playersInGame;
 
     // Start is called before the first frame update

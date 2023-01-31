@@ -58,9 +58,6 @@ public class PlayerToken : MonoBehaviourPunCallbacks
         {
             photonView.RPC("onPlayerCreated", RpcTarget.AllBuffered);
         }
-        
-        // set initial camera postiton to current player
-        // stateManager.cameraFollow.target = this.transform;
     }
 
     [PunRPC]
@@ -71,16 +68,16 @@ public class PlayerToken : MonoBehaviourPunCallbacks
         if(this.playerID == -1)
         {
             this.playerID = photonView.OwnerActorNr - 1;
-            Debug.Log("player actor number: " + (photonView.OwnerActorNr - 1));
-
             SetPlayerColor();
 
             // add playerToken to players in game list 
             GameObject playersInGame = GameObject.Find("PlayersInGame");
-            playersInGame.GetComponent<PlayersInGame>().AllPlayers.Add(this);
 
             // need to add player to state manager after setting id
-            // stateManager.GetComponent<PhotonView>().RPC("addPlayer2", RpcTarget.AllBuffered);
+            if(stateManager)
+            {
+                stateManager.GetComponent<PhotonView>().RPC("addPlayer2", RpcTarget.AllBuffered);
+            }
         }
 
     }

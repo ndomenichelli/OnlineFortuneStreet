@@ -46,24 +46,15 @@ public class StateManager : MonoBehaviourPunCallbacks
     [PunRPC]
     void addPlayer2()
     {
+        playerTokens = GameObject.FindObjectsOfType<PlayerToken>();
 
-        playersInGame = GameObject.FindObjectOfType<PlayersInGame>();
-
-        foreach (var player in PhotonNetwork.PlayerList)
-        {
-            int i = player.ActorNumber - 1;
-            Debug.Log("ac: " + i);
-
-            // create player token for each player in room
-            playerTokens[i] = playersInGame.playersInGame[i];
-        }
-
-         // set camera to first player in player list
-        if(cameraFollow.target == null)
+        // set camera to first player in player list once
+        if(photonView.IsMine && cameraFollow.target == null)
         {
             Debug.Log("Setting camera");
             cameraFollow.target = playerTokens[0].transform;
         }
+
     }
 
     public void NewTurn()
