@@ -16,6 +16,9 @@ public class PlayerToken : MonoBehaviourPunCallbacks
     SpaceToMoveDisplay spacesDisplay;
     ScoreDisplay scoreDisplay;
 
+    // [SerializeField]
+    // public PlayersInGame playersInGame;
+
     public Space[] moveQueue;
     public int moveQueueIndex;
 
@@ -31,9 +34,6 @@ public class PlayerToken : MonoBehaviourPunCallbacks
     PlayerToken lastTokenHere;
 
     int spacesLeft;
-
-    //public int cash;
-    //public int netWorth;
 
     // Start is called before the first frame update
     void Start()
@@ -51,40 +51,51 @@ public class PlayerToken : MonoBehaviourPunCallbacks
 
         // player id, starts at 0 (0123)
 
-        Debug.Log("players in room" + PhotonNetwork.CurrentRoom.PlayerCount);
-        int playersInGame = GameObject.FindObjectsOfType<PlayerToken>().Length;
-
-        this.playerID = playersInGame - 1;
-      
         Debug.Log("player id on room create: " + this.playerID);
         this.targetPostion = this.transform.position;
 
-        // Material materialColor = Resources.Load("Materials/" + 'Player ' + (this.playerID + 1), typeof(Material)) as Material;
+        if(photonView.IsMine)
+        {
+            photonView.RPC("onPlayerCreated", RpcTarget.AllBuffered);
+        }
+        
+        // set initial camera postiton to current player
+        // stateManager.cameraFollow.target = this.transform;
+    }
 
+    [PunRPC]
+    void onPlayerCreated()
+    { 
+        Debug.Log("onPlayerCreated");
+
+        if(this.playerID == -1)
+        {
+            this.playerID = photonView.OwnerActorNr - 1;
+            Debug.Log("player actor number: " + (photonView.OwnerActorNr - 1));
+
+            SetPlayerColor();
+
+            // add playerToken to players in game list 
+            GameObject playersInGame = GameObject.Find("PlayersInGame");
+            playersInGame.GetComponent<PlayersInGame>().AllPlayers.Add(this);
+
+            // need to add player to state manager after setting id
+            // stateManager.GetComponent<PhotonView>().RPC("addPlayer2", RpcTarget.AllBuffered);
+        }
+
+    }
+
+    void SetPlayerColor()
+    {
+        // set player color according to id
         MeshRenderer playerColorHead = this.transform.GetChild(0).GetComponent<MeshRenderer>();
         MeshRenderer playerColorBody = this.transform.GetChild(1).GetComponent<MeshRenderer>();
 
-        // set color per player
-        if(this.playerID == 0)
-        {
-            playerColorHead.material = Resources.Load("Materials/Player 1", typeof(Material)) as Material;
-            playerColorBody.material = Resources.Load("Materials/Player 1", typeof(Material)) as Material;
-        }
-        else if (this.playerID == 1)
-        {
-            playerColorHead.material = Resources.Load("Materials/Player 2", typeof(Material)) as Material;
-            playerColorBody.material = Resources.Load("Materials/Player 2", typeof(Material)) as Material;
-        }
-        else if (this.playerID == 2)
-        {
-            // myText.color = Color.green;
-        }
-        else if (this.playerID == 3)
-        {
-            // myText.color = Color.yellow;
-        }
+        // id is 0-3 and player colors are 1-4
+        playerColorHead.material = Resources.Load("Materials/Player " + (this.playerID + 1), typeof(Material)) as Material;
+        playerColorBody.material = Resources.Load("Materials/Player " + (this.playerID + 1), typeof(Material)) as Material;
     }
-
+    
     // Update is called once per frame
     void Update()
     {

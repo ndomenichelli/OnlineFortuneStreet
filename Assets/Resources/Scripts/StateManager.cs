@@ -9,6 +9,8 @@ public class StateManager : MonoBehaviourPunCallbacks
     // Start is called before the first frame update
 
     ScoreDisplay scoreDisplay;
+
+    [SerializeField]
     public CameraFollow cameraFollow;
 
     // game settings
@@ -33,7 +35,7 @@ public class StateManager : MonoBehaviourPunCallbacks
     public PlayerToken[] playerTokens;
 
     [SerializeField]
-    GameObject PlayersInGame;
+    public PlayersInGame playersInGame;
 
     void Start()
     {
@@ -44,28 +46,23 @@ public class StateManager : MonoBehaviourPunCallbacks
     [PunRPC]
     void addPlayer2()
     {
-        // playerScoreDisplays = this.transform.GetChild(0).GetComponentsInChildren<Canvas>();
-        int i = 0;
 
-        // get amount of players in game
-        // Debug.Log("player list: " + PhotonNetwork.PlayerList);
+        playersInGame = GameObject.FindObjectOfType<PlayersInGame>();
 
-        // players = PhotonNetwork.PlayerList;
         foreach (var player in PhotonNetwork.PlayerList)
         {
-            // create player token for each player in room
-            playerTokens[i] = GameObject.FindObjectOfType<PlayerToken>();
-            Debug.Log("state manager for player: " + player + " i: " + i);
+            int i = player.ActorNumber - 1;
+            Debug.Log("ac: " + i);
 
-            i++;
+            // create player token for each player in room
+            playerTokens[i] = playersInGame.playersInGame[i];
         }
 
-        Debug.Log("Current player id: " + CurrentPlayerID);
-
-        // set camera to first player
+         // set camera to first player in player list
         if(cameraFollow.target == null)
         {
-            cameraFollow.target = playerTokens[CurrentPlayerID].transform;
+            Debug.Log("Setting camera");
+            cameraFollow.target = playerTokens[0].transform;
         }
     }
 

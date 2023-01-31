@@ -621,7 +621,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   StartingSpace: {fileID: 0}
   currentSpace: {fileID: 0}
-  playerID: 0
+  playerID: -1
   playerStats: {fileID: 4089404495972572063}
   moveQueue: []
   moveQueueIndex: 0

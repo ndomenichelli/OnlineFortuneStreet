@@ -19,6 +19,8 @@ public class ScoreDisplay : MonoBehaviourPunCallbacks
 
     public GameObject[] updateDisplay;
 
+    public PlayersInGame playersInGame;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -49,23 +51,13 @@ public class ScoreDisplay : MonoBehaviourPunCallbacks
     [PunRPC]
     void addPlayer()
     {
-        // playerScoreDisplays = this.transform.GetChild(0).GetComponentsInChildren<Canvas>();
-        int i = 0;
-
-        // get amount of players in game
-        // Debug.Log("player list: " + PhotonNetwork.PlayerList);
-
-        // players = PhotonNetwork.PlayerList;
-        foreach (var player in PhotonNetwork.PlayerList)
+        // everytime someone joins, set all score displays active
+        for (int i = 0; i < PhotonNetwork.CurrentRoom.PlayerCount; i++)
         {
-            // create player token for each player in room
-            players[i] = GameObject.FindObjectOfType<PlayerToken>();
-            Debug.Log("score display for player: " + player + " i: " + i);
-
             playerScoreDisplays[i].gameObject.SetActive(true);
-            i++;
         }
 
+        
     }
 
     public void setCashTextDisplay(PlayerToken player)

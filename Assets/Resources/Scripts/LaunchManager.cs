@@ -22,6 +22,8 @@ public class LaunchManager : MonoBehaviourPunCallbacks
     {
         EnterGamePanel.SetActive(true);
         ConnectionStatusPanel.SetActive(false);
+
+        // PhotonNetwork.AutomaticallySyncScene = true;
     }
 
     // Update is called once per frame

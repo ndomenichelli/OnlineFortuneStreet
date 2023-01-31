@@ -6,7 +6,11 @@ using Photon.Realtime;
 
 public class PlayersInGame : MonoBehaviourPunCallbacks
 {
-    public PlayerToken[] playerTokens;
+    // [SerializeField]
+    // public PlayerToken playerToken;
+
+    public List<PlayerToken> AllPlayers = new List<PlayerToken>(4);
+    public PlayerToken[] playersInGame;
 
     // Start is called before the first frame update
     void Start()
@@ -23,14 +27,22 @@ public class PlayersInGame : MonoBehaviourPunCallbacks
     [PunRPC]
     void addPlayerToGame()
     {
-        int i = 0;
-        foreach (var player in PhotonNetwork.PlayerList)
-        {
-            // create player token for each player in room
-            playerTokens[i] = GameObject.FindObjectOfType<PlayerToken>();
-            Debug.Log("players in game for player: " + player + " i: " + i);
+        // Debug.Log("addPlayerToGame");
 
-            i++;
-        }
+        // playerToken = GameObject.FindObjectOfType<PlayerToken>();
+        
+        // Player lastestPlayer = PhotonNetwork.PlayerList[PhotonNetwork.PlayerList.Length-1];
+        
+        // // Debug.Log("player actor number: " + player.ActorNumber);
+        // playerTokens.Add(lastestPlayer.ActorNumber - 1, playerToken);
+        
+        // // log
+        // // foreach(var pt in playerTokens)
+        // // {
+		// // 	Debug.Log("Key: " + pt.Key + ", Value: " + pt.Value);
+        // // }
+
+        playersInGame = GameObject.FindObjectsOfType<PlayerToken>();
+
     }
 }

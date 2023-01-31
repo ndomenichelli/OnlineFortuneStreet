@@ -39,13 +39,14 @@ public class AddPlayerManager : MonoBehaviourPunCallbacks
 
                 Debug.Log("Player added");
                 
-                // PlayersInGame.GetComponent<PhotonView>().RPC("addPlayerToGame", RpcTarget.AllBuffered);
+                // add players to game, so everything else can use players in game in same order
+                PlayersInGame.GetComponent<PhotonView>().RPC("addPlayerToGame", RpcTarget.AllBuffered);
 
                 // add display for joining player
                 ScoreDisplay.GetComponent<PhotonView>().RPC("addPlayer", RpcTarget.AllBuffered);
 
                 // add players to state manager
-                StateManager.GetComponent<PhotonView>().RPC("addPlayer2", RpcTarget.AllBuffered);
+                // StateManager.GetComponent<PhotonView>().RPC("addPlayer2", RpcTarget.AllBuffered);
             }
         }
     }
