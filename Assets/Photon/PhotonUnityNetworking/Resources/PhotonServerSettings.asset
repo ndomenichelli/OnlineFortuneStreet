@@ -44,6 +44,7 @@ MonoBehaviour:
   - addPlayerToGame
   - RollTheDice
   - onPlayerCreated
+  - NewTurn
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

@@ -37,21 +37,29 @@ public class DiceRoller : MonoBehaviourPunCallbacks
     {
     }
 
-    //numbers on dice
-    //public int[] DiceValues;
-    //number on total number of dice
+    [PunRPC]
     public void NewTurn()
     {
-        // this is the start of a players new turn
-        stateManager.isDoneRolling = false;
+        if (photonView.IsMine)
+        {
+            rollButton.SetActive(false);
+        }
+        else
+        {
+            rollButton.SetActive(true);
+        }
     }
 
     public void rollAndSendNumber()
     {
+        // roll 1-7 and send to all players so game is synced
+
         int numberToSend = Random.Range(1, 8);
-        this.GetComponent<PhotonView>().RPC("RollTheDice", RpcTarget.AllBuffered, numberToSend);
+        this
+            .GetComponent<PhotonView>()
+            .RPC("RollTheDice", RpcTarget.AllBuffered, numberToSend);
     }
-    
+
     [PunRPC]
     public void RollTheDice(int number)
     {
@@ -60,21 +68,24 @@ public class DiceRoller : MonoBehaviourPunCallbacks
             // already rolled
             return;
         }
+
         if (photonView.IsMine)
         {
-            this.gameObject.SetActive(true);
+            rollButton.SetActive(true);
         }
         else
         {
             rollButton.SetActive(false);
         }
 
-        // roll 1-7
         stateManager.DiceTotal = number;
         spacesDisplay.setDisplay(stateManager.DiceTotal);
 
         this.transform.GetChild(0).GetComponent<Image>().sprite =
             DiceImages[stateManager.DiceTotal - 1];
+
+        // after roll, hide roll button
+        rollButton.SetActive(false);
 
         // multiple dice code
         //DiceTotal = 0;
@@ -91,7 +102,8 @@ public class DiceRoller : MonoBehaviourPunCallbacks
         //}
         //Debug.Log("Rolled: " + DiceTotal);
         //hard code roll
-        // stateManager.DiceTotal = 7;
+        stateManager.DiceTotal = 2;
+
         stateManager.isDoneRolling = true;
         stateManager.currentPhase = StateManager.TurnPhase.MOVEMENT;
         stateManager.CheckLegalMoves();

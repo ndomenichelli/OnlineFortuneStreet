@@ -37,6 +37,8 @@ public class StateManager : MonoBehaviourPunCallbacks
     [SerializeField]
     public PlayersInGame playersInGame;
 
+    public DiceRoller diceRoller;
+
     void Start()
     {
         scoreDisplay = GameObject.FindObjectOfType<ScoreDisplay>();
@@ -57,6 +59,7 @@ public class StateManager : MonoBehaviourPunCallbacks
 
     }
 
+    [PunRPC]
     public void NewTurn()
     {
         isDoneRolling = false;
@@ -71,6 +74,12 @@ public class StateManager : MonoBehaviourPunCallbacks
         Debug.Log("playertokens new turn: " + playerTokens[CurrentPlayerID]);
 
         cameraFollow.target = playerTokens[CurrentPlayerID].transform;
+
+        // DiceRoller diceRoller = GameObject.FindObjectOfType<DiceRoller>();
+        // diceRoller.NewTurn();
+
+        Debug.Log(diceRoller);
+        diceRoller.GetComponent<PhotonView>().RPC("NewTurn", RpcTarget.AllBuffered);
     }
     public enum TurnPhase
     {
@@ -113,7 +122,9 @@ public class StateManager : MonoBehaviourPunCallbacks
                 {
                     // shop is owned, landing player pays owner, then check for buyout
                     playerTokens[CurrentPlayerID].playerStats.payPlayer(thisShop.ownedBy, thisShop.buyPrice / buyToRent);
-                    NewTurn();
+                    // NewTurn();
+                    photonView.RPC("NewTurn", RpcTarget.AllBuffered);
+
                 }
             }
             else if (playerTokens[CurrentPlayerID].currentSpace.name.Contains("Suit"))
@@ -121,6 +132,8 @@ public class StateManager : MonoBehaviourPunCallbacks
                 // TODO: 100 cards thing
 
                 NewTurn();
+                photonView.RPC("NewTurn", RpcTarget.AllBuffered);
+
             }
             else if (playerTokens[CurrentPlayerID].currentSpace.name.Contains("Warp"))
             {
@@ -151,13 +164,17 @@ public class StateManager : MonoBehaviourPunCallbacks
                 // TODO: make animation smooth
                 StartCoroutine(WarpTo(thisWarp2));
 
-                NewTurn();
+                // NewTurn();
+                photonView.RPC("NewTurn", RpcTarget.AllBuffered);
+
 
             }
             // temp code for generic spaces
             else
             {
-                NewTurn();
+                // NewTurn();
+                photonView.RPC("NewTurn", RpcTarget.AllBuffered);
+
             }
         }
         else
@@ -209,7 +226,9 @@ public class StateManager : MonoBehaviourPunCallbacks
         //wait 1 second
         yield return new WaitForSeconds(1f);
 
-        NewTurn();
+        // NewTurn();
+        photonView.RPC("NewTurn", RpcTarget.AllBuffered);
+
     }
     IEnumerator WarpTo(Warp target)
     {
